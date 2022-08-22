@@ -33,4 +33,5 @@ TradingView Strategy Alert Webhook that buys and sells crypto with the Binance A
 # YouTube tutorial on how to use this code (Thai)
 https://youtu.be/t3AOdg9QPiI
 ### mod and dev by DR.AKN
+
 ### Compatible with VXD Cloud Edition Tradingview by Vaz
