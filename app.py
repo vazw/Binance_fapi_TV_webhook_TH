@@ -129,10 +129,7 @@ def webhook():
         print("MARGIN-CALL")
         msg ="BINANCE : เตือน!!!\nยอดเงินต่ำกว่าที่กำหนดไว้("+ str(min_balance)+ " USDT)"+"\nยอดปัจจุบัน:"+ str(balance) + " USDT" + "\n!!!!MARGIN-CALL!!!!"
         r = requests.post(url, headers=headers, data = {'message':msg})
-        return {
-        "code" : "fail",
-        "message" : "Margin-CALL"
-        }
+        break
     
     ask = float(client.futures_orderbook_ticker(symbol =symbol)['askPrice'])
     bid = float(client.futures_orderbook_ticker(symbol =symbol)['bidPrice']) 
@@ -249,7 +246,7 @@ def webhook():
         try :
             client.futures_change_leverage(symbol=symbol,leverage=lev) 
         except :
-            lev = float(client.futures_position_information(symbol=symbol)[2]['leverage'])
+            lev = float(client.futures_position_information(symbol=symbol)[1]['leverage'])
         print('leverage : X',lev)
         order_BUY = client.futures_create_order(symbol=symbol, positionSide='LONG', side='BUY', type='MARKET', quantity=Qty_buy)               
         time.sleep(1)
