@@ -337,7 +337,7 @@ def webhook():
             if entryPS > 0 :
                 ROIS= (entryPS-bid)/entryPS*100*leverage     
                 print("Short %ROE=",ROIS)   
-            msgS = "\nShort ราคา     : " + str(float(client.futures_position_information(symbol=symbol)[2]['entryPrice']))+ "\nจำนวน    : " + str(float(client.futures_position_information(symbol=symbol)[2]['positionAmt']))+ COIN + "(" +str(round((amoutS*bid),2)) + " USDT)" + "\nLeverage         : X" + str(round(leverage)) + "\nMargin            : "+ str(round(margin,2)) + " USDT\n%ROE              : "+ str(round(ROIS,2)) + "%" + "\nกำไร/ขาดทุน : "+ str(round(float(client.futures_position_information(symbol=symbol)[2]['unRealizedProfit']),2)) +" USDT" + "\n         -------------" 
+            msgS = "\nShort ราคา     : " + str(float(client.futures_position_information(symbol=symbol)[2]['entryPrice']))+ "\nจำนวน    : " + str(abs(float(client.futures_position_information(symbol=symbol)[2]['positionAmt'])))+ COIN + "(" +str(round((amoutS*bid),2)) + " USDT)" + "\nLeverage         : X" + str(round(leverage)) + "\nMargin            : "+ str(round(margin,2)) + " USDT\n%ROE              : "+ str(round(ROIS,2)) + "%" + "\nกำไร/ขาดทุน : "+ str(round(float(client.futures_position_information(symbol=symbol)[2]['unRealizedProfit']),2)) +" USDT" + "\n         -------------" 
             print("---------------------------")
         print("If position amount is = your real position in binance you are good to GO!")
         print("If something is off please re-check all Setting.")
