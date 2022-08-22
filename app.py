@@ -173,7 +173,7 @@ def webhook():
             profit = unpnl * abs(qty_close/posiAmt)
             print("Margin %ROE=",ROI)            
             #success close buy, push line notification                    
-            msg ="BINANCE:\n" + "บอท           : " + BOT_NAME + "\nคู่เทรด      : " + COIN + "/USDT" + "\nสถานะ      : " + action + "[BUY]" + "\nจำนวน    : " + str(qty_close*-1) + " "+  COIN +"("+str(round((qty_close*ask*-1),2))+" USDT)" + "\nราคา        :" + str(ask) + " USDT" + "\nLeverage    : X" + str(round(leverage)) + "\n%ROE         :"+ str(round(ROI,2)) + "%" + "\nกำไร/ขาดทุน: " + str(round(profit,2)) + " USDT"  +"\nยอดปัจจุบัน   :" + str(round(new_balance,2)) + " USDT"
+            msg ="BINANCE:\n" + "บอท           : " + BOT_NAME + "\nคู่เทรด      : " + COIN + "/USDT" + "\nสถานะ      : " + action + "[BUY]" + "\nจำนวน    : " + str(qty_close) + " "+  COIN +"("+str(round((qty_close*ask),2))+" USDT)" + "\nราคา        :" + str(ask) + " USDT" + "\nLeverage    : X" + str(round(leverage)) + "\n%ROE         :"+ str(round(ROI,2)) + "%" + "\nกำไร/ขาดทุน: " + str(round(profit,2)) + " USDT"  +"\nยอดปัจจุบัน   :" + str(round(new_balance,2)) + " USDT"
             r = requests.post(url, headers=headers, data = {'message':msg})
             print(symbol,": Close Short Position Excuted")
         else :
