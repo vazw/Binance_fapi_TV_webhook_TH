@@ -75,7 +75,7 @@ def webhook():
         action = 'test'
  
     amount = data['amount']
-    symbol = data['symbol']
+    symbol = data['symbol'].upper()
     lev = data['leverage']
     
     #separate amount type
@@ -180,7 +180,9 @@ def webhook():
             msg ="BINANCE:\n" + "บอท           : " + BOT_NAME + "\nคู่เทรด      : " + COIN + "/USDT" + "\nสถานะ      : " + action + "[BUY]" + "\nจำนวน    : " + str(qty_close*-1) + " "+  COIN +"("+str(round((qty_close*ask*-1),2))+" USDT)" + "\nราคา        :" + str(ask) + " USDT" + "\nLeverage    : X" + str(round(leverage)) + "\n%ROE         :"+ str(round(ROI,2)) + "%" + "\nกำไร/ขาดทุน: " + str(round(profit,2)) + " USDT"  +"\nยอดปัจจุบัน   :" + str(round(new_balance,2)) + " USDT"
             r = requests.post(url, headers=headers, data = {'message':msg})
             print(symbol,": Close Short Position Excuted")
-    
+        else :
+            print("Do not have any Short Position on ",symbol)
+
     #CloseLong/SELL
     if action == "CloseLong":
         posiAmt = float(client.futures_position_information(symbol=symbol)[1]['positionAmt'])
@@ -222,7 +224,9 @@ def webhook():
             msg ="BINANCE:\n" + "บอท        :  " + BOT_NAME + "\nคู่เทรด       : " + COIN + "/USDT" + "\nสถานะ      : " + action + "[SELL]" + "\nจำนวน    : " + str(qty_close) + " "+  COIN +"("+str(round((qty_close*bid),2))+" USDT)" + "\nราคา       : " + str(bid) + " USDT" + "\nLeverage    : X" + str(round(leverage)) + "\n%ROE         :"+ str(round(ROI,2)) + "%"+ "\nกำไร/ขาดทุน: " + str(round(profit,2)) + " USDT" +"\nยอดปัจจุบัน   :" + str(round(new_balance,2)) + " USDT"
             r = requests.post(url, headers=headers, data = {'message':msg})
             print(symbol,": Close Long Position Excuted")
-        
+        else :
+            print("Do not have any Long Position on ",symbol)
+
     #OpenLong/BUY
     if action == "OpenLong" :
         qty_precision = 0
@@ -242,7 +246,10 @@ def webhook():
         print("Confirm:", symbol,":",action, ":Qty=",Qty_buy, " ", COIN,":USDT=", round(usdt,3))
         Qty_buy = abs(round(Qty_buy,qty_precision))
         print('qty buy : ',Qty_buy)
-        client.futures_change_leverage(symbol=symbol,leverage=lev) 
+        try :
+            client.futures_change_leverage(symbol=symbol,leverage=lev) 
+        except :
+            lev = float(client.futures_position_information(symbol=symbol)[2]['leverage'])
         print('leverage : X',lev)
         order_BUY = client.futures_create_order(symbol=symbol, positionSide='LONG', side='BUY', type='MARKET', quantity=Qty_buy)               
         time.sleep(1)
@@ -277,7 +284,10 @@ def webhook():
         print("Confirm:", symbol,":", action, ": Qty=", Qty_sell, " ", COIN,":USDT=", round(usdt,3))
         Qty_sell = abs(round(Qty_sell,qty_precision))
         print('qty sell : ',Qty_sell)
-        client.futures_change_leverage(symbol=symbol,leverage=lev)
+        try :
+            client.futures_change_leverage(symbol=symbol,leverage=lev) 
+        except :
+            lev = float(client.futures_position_information(symbol=symbol)[2]['leverage'])
         print('leverage : X',lev)
         order_SELL = client.futures_create_order(symbol=symbol, positionSide='SHORT', side='SELL', type='MARKET', quantity=Qty_sell)
         time.sleep(1)
